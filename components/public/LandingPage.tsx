@@ -2,11 +2,19 @@
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { Building2, Users, CheckCircle, ClipboardList, TrendingUp, Shield, ArrowRight, Sparkles } from 'lucide-react';
+import { Building2, Users, CheckCircle, ClipboardList, TrendingUp, Shield, ArrowRight, Sparkles, Menu, X, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function LandingPage() {
   const router = useRouter();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [loadingPath, setLoadingPath] = useState<string | null>(null);
+
+  const handleNavigation = (path: string) => {
+    setLoadingPath(path);
+    router.push(path);
+  };
 
   const features = [
     {
@@ -57,7 +65,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background w-full">
       {/* Navbar */}
-      <nav className="border-b border-border bg-card sticky top-0 z-50">
+      {/* <nav className="border-b border-border bg-card sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
@@ -85,6 +93,121 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+      </nav> */}
+      <nav className="border-b border-border bg-card sticky top-0 z-50 backdrop-blur">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+
+            {/* Logo */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                <Building2 className="w-6 h-6 text-white" />
+              </div>
+
+              <span className="text-lg sm:text-xl font-semibold">
+                HostelSaathi
+              </span>
+            </div>
+
+            {/* Desktop Nav */}
+            <div className="hidden md:flex items-center gap-3">
+              {[
+                ['Features', '/features'],
+                ['About', '/about'],
+                ['Contact', '/contact'],
+              ].map(([label, path]) => (
+                <Button
+                  key={path}
+                  variant="ghost"
+                  onClick={() => handleNavigation(path)}
+                  disabled={loadingPath === path}
+                >
+                  {loadingPath === path ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    label
+                  )}
+                </Button>
+              ))}
+
+              <Button
+                variant="outline"
+                onClick={() => handleNavigation('/login')}
+                disabled={loadingPath === '/login'}
+              >
+                {loadingPath === '/login' ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  'Login'
+                )}
+              </Button>
+
+              <Button
+                onClick={() => handleNavigation('/get-started')}
+                disabled={loadingPath === '/get-started'}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white"
+              >
+                {loadingPath === '/get-started' ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    Get Started
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </>
+                )}
+              </Button>
+            </div>
+
+            {/* Mobile Toggle */}
+            <button
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden py-4 border-t border-border animate-in slide-in-from-top-2">
+              <div className="flex flex-col gap-3">
+                {[
+                  ['Features', '/features'],
+                  ['About', '/about'],
+                  ['Contact', '/contact'],
+                ].map(([label, path]) => (
+                  <Button
+                    key={path}
+                    variant="ghost"
+                    className="justify-start"
+                    onClick={() => handleNavigation(path)}
+                  >
+                    {label}
+                  </Button>
+                ))}
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => handleNavigation('/login')}
+                >
+                  Login
+                </Button>
+
+                <Button
+                  className="text-foreground w-full bg-indigo-600 hover:bg-indigo-700"
+                  onClick={() => handleNavigation('/get-started')}
+                >
+                  Get Started
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </nav>
 
       {/* Hero Section */}
@@ -94,13 +217,13 @@ export default function LandingPage() {
             <Sparkles className="w-3 h-3 mr-1" />
             Modern Hostel Management
           </Badge>
-          <h1 className="text-5xl font-semibold text-foreground mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold text-foreground mb-6">
             Hostel Management<br />Made Simple
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Complete role-based workflow for hostel administration. From issue tracking to room allocation, manage everything in one place.
           </p>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
               size="lg"
               onClick={() => router.push('/get-started')}
@@ -128,7 +251,7 @@ export default function LandingPage() {
       {/* <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-semibold text-foreground mb-4">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-foreground mb-4">
               Built for Modern Hostels
             </h2>
             <p className="text-lg text-muted-foreground">
@@ -143,7 +266,7 @@ export default function LandingPage() {
                     <CardTitle className="text-sm">Total Issues</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-3xl font-semibold">24</p>
+                    <p className="text-2xl sm:text-3xl font-semibold">24</p>
                   </CardContent>
                 </Card>
                 <Card className="border-border">
@@ -151,7 +274,7 @@ export default function LandingPage() {
                     <CardTitle className="text-sm">Occupancy</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-3xl font-semibold">94%</p>
+                    <p className="text-2xl sm:text-3xl font-semibold">94%</p>
                   </CardContent>
                 </Card>
                 <Card className="border-border">
@@ -159,7 +282,7 @@ export default function LandingPage() {
                     <CardTitle className="text-sm">Active Tasks</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-3xl font-semibold">12</p>
+                    <p className="text-2xl sm:text-3xl font-semibold">12</p>
                   </CardContent>
                 </Card>
               </div>
@@ -170,34 +293,34 @@ export default function LandingPage() {
       {/* Product Preview */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-semibold text-foreground mb-4">
-              Built for Modern hostels
+          <div className="text-center mb-14">
+            <h2 className="text-2xl sm:text-4xl font-bold mb-4">
+              Built for Modern Hostels
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Built with role-based dashboards, issue tracking workflows,
-              analytics, and room management systems used by hostel administrators.
+
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              Designed for administrators, wardens, workers, and students with
+              dedicated workflows and modern dashboards.
             </p>
           </div>
 
           <div className="rounded-3xl border bg-card shadow-2xl overflow-hidden">
-            <div className="grid lg:grid-cols-[260px_1fr] min-h-[650px]">
-
+            <div className="grid lg:grid-cols-[260px_1fr]">
               {/* Sidebar */}
-              <div className="border-r bg-muted/40 p-6">
+              <div className="hidden lg:block border-r bg-muted/40 p-6">
                 <div className="space-y-3">
                   {[
                     'Dashboard',
                     'Complaints',
                     'Room Allocation',
-                    'Workers',
                     'Students',
+                    'Workers',
                     'Analytics',
                     'Settings',
                   ].map((item, i) => (
                     <div
-                      key={i}
-                      className={`rounded-xl px-4 py-3 text-sm font-medium transition ${i === 0
+                      key={item}
+                      className={`rounded-xl px-4 py-3 text-sm font-medium ${i === 0
                           ? 'bg-indigo-600 text-white'
                           : 'hover:bg-muted text-muted-foreground'
                         }`}
@@ -209,116 +332,129 @@ export default function LandingPage() {
 
                 <div className="mt-10 rounded-2xl bg-indigo-600 p-5 text-white">
                   <p className="text-sm opacity-80">Monthly Resolution Rate</p>
-                  <h3 className="text-3xl font-bold mt-2">92%</h3>
+
+                  <h3 className="text-4xl font-bold mt-2">92%</h3>
                 </div>
               </div>
 
-              {/* Main Content */}
-              <div className="p-6 space-y-6">
-
-                {/* Stats */}
-                <div className="grid md:grid-cols-4 gap-4">
+              {/* Main */}
+              <div className="p-4 sm:p-6 space-y-6">
+                {/* Top Stats */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   {[
-                    ['Active Students', '480'],
-                    ['Open Issues', '24'],
-                    ['Workers Assigned', '16'],
-                    ['Occupancy', '94%'],
-                  ].map(([title, value]) => (
-                    <Card key={title}>
-                      <CardHeader className="pb-2">
-                        <CardDescription>{title}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-3xl font-semibold">{value}</p>
+                    ['480', 'Students'],
+                    ['24', 'Open Issues'],
+                    ['16', 'Workers'],
+                    ['94%', 'Occupancy'],
+                  ].map(([value, label]) => (
+                    <Card key={label}>
+                      <CardContent className="p-5">
+                        <p className="text-2xl sm:text-3xl font-bold">
+                          {value}
+                        </p>
+
+                        <p className="text-sm text-muted-foreground mt-2">
+                          {label}
+                        </p>
                       </CardContent>
                     </Card>
                   ))}
                 </div>
 
-                {/* Complaint Table */}
+                {/* Complaints */}
                 <Card>
                   <CardHeader>
                     <CardTitle>Recent Complaints</CardTitle>
+
                     <CardDescription>
-                      Live issue tracking with worker assignment
+                      Live complaint tracking and worker assignment system
                     </CardDescription>
                   </CardHeader>
 
-                  <CardContent>
-                    <div className="space-y-4">
-                      {[
-                        ['Water leakage in Room 203', 'Assigned', 'High'],
-                        ['WiFi not working in Block B', 'In Progress', 'Medium'],
-                        ['Fan replacement needed', 'Resolved', 'Low'],
-                      ].map(([issue, status, priority], i) => (
-                        <div
-                          key={i}
-                          className="flex items-center justify-between rounded-xl border p-4"
-                        >
-                          <div>
-                            <p className="font-medium">{issue}</p>
-                            <p className="text-sm text-muted-foreground">
-                              Complaint ID #{1024 + i}
-                            </p>
-                          </div>
+                  <CardContent className="space-y-4">
+                    {[
+                      [
+                        'Water leakage in Room 203',
+                        'Assigned',
+                        'High',
+                      ],
+                      [
+                        'WiFi issue in Block B',
+                        'In Progress',
+                        'Medium',
+                      ],
+                      [
+                        'Fan replacement needed',
+                        'Resolved',
+                        'Low',
+                      ],
+                    ].map(([issue, status, priority], i) => (
+                      <div
+                        key={i}
+                        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border rounded-xl p-4"
+                      >
+                        <div>
+                          <p className="font-medium">{issue}</p>
 
-                          <div className="flex items-center gap-3">
-                            <Badge variant="secondary">{priority}</Badge>
-
-                            <Badge
-                              className={
-                                status === 'Resolved'
-                                  ? 'bg-green-500 text-white'
-                                  : status === 'In Progress'
-                                    ? 'bg-yellow-500 text-white'
-                                    : 'bg-blue-500 text-white'
-                              }
-                            >
-                              {status}
-                            </Badge>
-                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Complaint ID #{1024 + i}
+                          </p>
                         </div>
-                      ))}
-                    </div>
+
+                        <div className="flex items-center gap-3">
+                          <Badge variant="secondary">{priority}</Badge>
+
+                          <Badge
+                            className={
+                              status === 'Resolved'
+                                ? 'bg-green-500 text-white'
+                                : status === 'In Progress'
+                                  ? 'bg-yellow-500 text-white'
+                                  : 'bg-blue-500 text-white'
+                            }
+                          >
+                            {status}
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
                   </CardContent>
                 </Card>
 
                 {/* Bottom Grid */}
                 <div className="grid md:grid-cols-2 gap-6">
-
                   <Card>
                     <CardHeader>
                       <CardTitle>Room Occupancy</CardTitle>
                     </CardHeader>
 
-                    <CardContent>
-                      <div className="space-y-4">
-                        {[
-                          ['Block A', '96%'],
-                          ['Block B', '92%'],
-                          ['Block C', '88%'],
-                        ].map(([block, val]) => (
-                          <div key={block}>
-                            <div className="flex justify-between mb-2 text-sm">
-                              <span>{block}</span>
-                              <span>{val}</span>
-                            </div>
+                    <CardContent className="space-y-5">
+                      {[
+                        ['Block A', '96%'],
+                        ['Block B', '92%'],
+                        ['Block C', '88%'],
+                      ].map(([block, value]) => (
+                        <div key={block}>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>{block}</span>
 
-                            <div className="h-2 rounded-full bg-muted overflow-hidden">
-                              <div
-                                className="h-full bg-indigo-600 rounded-full"
-                                style={{ width: val }}
-                              />
-                            </div>
+                            <span>{value}</span>
                           </div>
-                        ))}
-                      </div>
+
+                          <div className="h-2 rounded-full bg-muted overflow-hidden">
+                            <div
+                              className="h-full bg-indigo-600 rounded-full"
+                              style={{ width: value }}
+                            />
+                          </div>
+                        </div>
+                      ))}
                     </CardContent>
                   </Card>
 
                   <Card>
                     <CardHeader>
-                      <CardTitle>Assigned Workers</CardTitle>
+                      <CardTitle>Worker Status</CardTitle>
                     </CardHeader>
 
                     <CardContent className="space-y-4">
@@ -333,7 +469,10 @@ export default function LandingPage() {
                         >
                           <div>
                             <p className="font-medium">{name}</p>
-                            <p className="text-sm text-muted-foreground">{dept}</p>
+
+                            <p className="text-sm text-muted-foreground">
+                              {dept}
+                            </p>
                           </div>
 
                           <Badge variant="outline">Active</Badge>
@@ -341,7 +480,6 @@ export default function LandingPage() {
                       ))}
                     </CardContent>
                   </Card>
-
                 </div>
               </div>
             </div>
@@ -353,14 +491,14 @@ export default function LandingPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-semibold text-foreground mb-4">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-foreground mb-4">
               How It Works
             </h2>
             <p className="text-lg text-muted-foreground">
               Get started in four simple steps
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-6">
             {steps.map((step, index) => (
               <Card key={index} className="border-border">
                 <CardHeader>
@@ -382,14 +520,14 @@ export default function LandingPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-semibold text-foreground mb-4">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-foreground mb-4">
               Everything You Need
             </h2>
             <p className="text-lg text-muted-foreground">
               Comprehensive features for complete hostel management
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-2 gap-6">
             {features.map((feature, index) => (
               <Card key={index} className="border-border">
                 <CardHeader>
@@ -410,7 +548,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <Card className="border-border bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20">
             <CardContent className="p-12 text-center">
-              <h2 className="text-3xl font-semibold text-foreground mb-4">
+              <h2 className="text-2xl sm:text-3xl font-semibold text-foreground mb-4">
                 Ready to Get Started?
               </h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -496,7 +634,7 @@ export default function LandingPage() {
           </div>
           <div className="border-t border-border mt-8 pt-8 text-center">
             <p className="text-sm text-muted-foreground">
-              © 2026 HostelSaathi. All rights reserved.
+              © {new Date().getFullYear()} HostelSaathi. All rights reserved.
             </p>
           </div>
         </div>
