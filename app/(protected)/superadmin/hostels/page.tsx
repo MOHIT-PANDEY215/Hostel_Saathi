@@ -20,7 +20,7 @@ export default function SuperAdminHostelManagement() {
 
   const filteredHostels = mockHostels.filter(hostel =>
     hostel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    hostel?.address.toLowerCase().includes(searchQuery.toLowerCase())
+    hostel?.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const { isPending, isError, data, error } = useGetDashboard()
@@ -222,7 +222,7 @@ export default function SuperAdminHostelManagement() {
                   <CardTitle className="text-xl">{hostel?.name}</CardTitle>
                   <CardDescription className="flex items-center gap-2 mt-2">
                     <MapPin className="w-4 h-4" />
-                    {hostel?.address}
+                    {hostel?.location}
                   </CardDescription>
                 </div>
                 <Badge
@@ -360,7 +360,7 @@ export default function SuperAdminHostelManagement() {
                 </div>
                 <div className="space-y-2">
                   <Label>Location</Label>
-                  <Input defaultValue={editingHostel?.address} />
+                  <Input defaultValue={editingHostel?.location} />
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4">

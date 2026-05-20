@@ -5,7 +5,7 @@ import { Card, CardContent } from '../ui/card';
 import { Building2, ArrowRight, CheckCircle, } from 'lucide-react';
 import { toast } from 'sonner';
 import { Progress } from '../ui/progress';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import OrgForm from './OrgForm';
 import HostelForm from './HostelForm';
 import WardenForm from './WardenForm';
@@ -13,7 +13,7 @@ import { useOnboardingStore } from '@/stores/onboardingStore';
 
 export default function GetStartedFlow() {
   const router = useRouter();
-  const searchParams = useSearchParams()
+  // const searchParams = useSearchParams()
   const { hasOrg, hasHostel } = useOnboardingStore()
 
   const [step, setStep] = useState(1);
