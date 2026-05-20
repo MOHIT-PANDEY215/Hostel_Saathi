@@ -55,9 +55,9 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background w-full">
       {/* Navbar */}
-      <nav className="border-b border-border bg-card">
+      <nav className="border-b border-border bg-card sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
@@ -125,7 +125,7 @@ export default function LandingPage() {
       </section>
 
       {/* Product Preview */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      {/* <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-semibold text-foreground mb-4">
@@ -162,6 +162,187 @@ export default function LandingPage() {
                     <p className="text-3xl font-semibold">12</p>
                   </CardContent>
                 </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
+      {/* Product Preview */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-semibold text-foreground mb-4">
+              Built for Modern hostels
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Built with role-based dashboards, issue tracking workflows,
+              analytics, and room management systems used by hostel administrators.
+            </p>
+          </div>
+
+          <div className="rounded-3xl border bg-card shadow-2xl overflow-hidden">
+            <div className="grid lg:grid-cols-[260px_1fr] min-h-[650px]">
+
+              {/* Sidebar */}
+              <div className="border-r bg-muted/40 p-6">
+                <div className="space-y-3">
+                  {[
+                    'Dashboard',
+                    'Complaints',
+                    'Room Allocation',
+                    'Workers',
+                    'Students',
+                    'Analytics',
+                    'Settings',
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className={`rounded-xl px-4 py-3 text-sm font-medium transition ${i === 0
+                          ? 'bg-indigo-600 text-white'
+                          : 'hover:bg-muted text-muted-foreground'
+                        }`}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-10 rounded-2xl bg-indigo-600 p-5 text-white">
+                  <p className="text-sm opacity-80">Monthly Resolution Rate</p>
+                  <h3 className="text-3xl font-bold mt-2">92%</h3>
+                </div>
+              </div>
+
+              {/* Main Content */}
+              <div className="p-6 space-y-6">
+
+                {/* Stats */}
+                <div className="grid md:grid-cols-4 gap-4">
+                  {[
+                    ['Active Students', '480'],
+                    ['Open Issues', '24'],
+                    ['Workers Assigned', '16'],
+                    ['Occupancy', '94%'],
+                  ].map(([title, value]) => (
+                    <Card key={title}>
+                      <CardHeader className="pb-2">
+                        <CardDescription>{title}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-3xl font-semibold">{value}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                {/* Complaint Table */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Complaints</CardTitle>
+                    <CardDescription>
+                      Live issue tracking with worker assignment
+                    </CardDescription>
+                  </CardHeader>
+
+                  <CardContent>
+                    <div className="space-y-4">
+                      {[
+                        ['Water leakage in Room 203', 'Assigned', 'High'],
+                        ['WiFi not working in Block B', 'In Progress', 'Medium'],
+                        ['Fan replacement needed', 'Resolved', 'Low'],
+                      ].map(([issue, status, priority], i) => (
+                        <div
+                          key={i}
+                          className="flex items-center justify-between rounded-xl border p-4"
+                        >
+                          <div>
+                            <p className="font-medium">{issue}</p>
+                            <p className="text-sm text-muted-foreground">
+                              Complaint ID #{1024 + i}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center gap-3">
+                            <Badge variant="secondary">{priority}</Badge>
+
+                            <Badge
+                              className={
+                                status === 'Resolved'
+                                  ? 'bg-green-500 text-white'
+                                  : status === 'In Progress'
+                                    ? 'bg-yellow-500 text-white'
+                                    : 'bg-blue-500 text-white'
+                              }
+                            >
+                              {status}
+                            </Badge>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Bottom Grid */}
+                <div className="grid md:grid-cols-2 gap-6">
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Room Occupancy</CardTitle>
+                    </CardHeader>
+
+                    <CardContent>
+                      <div className="space-y-4">
+                        {[
+                          ['Block A', '96%'],
+                          ['Block B', '92%'],
+                          ['Block C', '88%'],
+                        ].map(([block, val]) => (
+                          <div key={block}>
+                            <div className="flex justify-between mb-2 text-sm">
+                              <span>{block}</span>
+                              <span>{val}</span>
+                            </div>
+
+                            <div className="h-2 rounded-full bg-muted overflow-hidden">
+                              <div
+                                className="h-full bg-indigo-600 rounded-full"
+                                style={{ width: val }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Assigned Workers</CardTitle>
+                    </CardHeader>
+
+                    <CardContent className="space-y-4">
+                      {[
+                        ['Rahul Kumar', 'Electrical'],
+                        ['Amit Singh', 'Plumbing'],
+                        ['Sanjay Das', 'Maintenance'],
+                      ].map(([name, dept]) => (
+                        <div
+                          key={name}
+                          className="flex items-center justify-between"
+                        >
+                          <div>
+                            <p className="font-medium">{name}</p>
+                            <p className="text-sm text-muted-foreground">{dept}</p>
+                          </div>
+
+                          <Badge variant="outline">Active</Badge>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+
+                </div>
               </div>
             </div>
           </div>
